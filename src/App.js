@@ -8,12 +8,7 @@ import Filter from "components/Filter/Filter";
 
 class App extends React.Component {
   state = {
-    contacts: [
-      { id: "BlindBandit", name: "Toph Beifong", number: "459-12-56" },
-      { id: "SifuHotman", name: "Zuko Roku", number: "443-89-12" },
-      { id: "BlueFire", name: "Azula Sozin", number: "645-17-79" },
-      { id: "Twinkletoes", name: "Aang Gyatso", number: "227-91-26" },
-    ],
+    contacts: [],
     filter: "",
   };
 
@@ -56,7 +51,31 @@ class App extends React.Component {
     }));
   };
 
+  componentDidMount() {
+    console.log("App componentDidMount");
+
+    const savedContacts = JSON.parse(localStorage.getItem("contacts"));
+    if (savedContacts) {
+      this.setState({ contacts: savedContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("App componentDidUpdate");
+
+    console.log(prevState);
+    console.log(this.state);
+
+    if (this.state.contacts !== prevState.contacts) {
+      console.log("Contacts updated");
+
+      localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
+    }
+  }
+
   render() {
+    console.log("App render");
+
     const filteredContacts = this.getfilteredContacts();
 
     return (
